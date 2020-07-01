@@ -27,12 +27,11 @@ MIS Builder Budget
 
 Create budgets for MIS reports.
 
-This module lets you create budgets for any MIS report. Several budgets
-can be created for a given report template (ie one budget per year). Budget
-figures are provided at the KPI level, with different time periods. A budget
-can then be selected as a data source for a MIS report column, and the report
-will show the budgeted values for each KPI, adjusted for the period of the 
-column.
+This module lets you create budgets for any MIS report. Several budgets can be
+created for a given report template (ie one budget per year). Budget figures
+are provided by KPI or by GL account, with different time periods. A budget can
+then be selected as a data source for a MIS report column, and the report will
+show the budgeted values for each KPI, adjusted for the period of the column.
 
 **Table of contents**
 
@@ -42,34 +41,70 @@ column.
 Usage
 =====
 
-To use this module, you first need to flag at least some KPI in a MIS
-report to be budgetable. You also need to configure the accumulation method
-on the KPI according to their type. 
+There are two ways to use this module: create budgets by KPI or budgets by
+GL accounts. Currently, the two methods cannot be combined in the same budget.
+
+**Budget by KPIs**
+
+To use this this mode, you first need to flag at least some KPI in a MIS report
+to be budgetable. You also need to configure the accumulation method on the KPI
+according to their type.
 
 The accumulation method determines how budgeted values spanning over a
 time period are transformed to match the reporting period.
 
-* Sum: values of shorter period are added, values of longest or partially overlapping 
+* Sum: values of shorter period are added, values of longest or partially overlapping
   periods are adjusted pro-rata temporis (eg monetary amount such as revenue).
 * Average: values of included period are averaged with a pro-rata temporis weight.
   Typically used for values that do not accumulate over time (eg a number of employees).
 
-When KPI are configured, you need to create a budget, then click on the budget items
-button to create or import the budgeted amounts for all your KPI and time periods.
+When KPI are configured, you need to create a budget, using the MIS Budget (by
+KPIs) menu, then click on the budget items button to create or import the
+budgeted amounts for all your KPI and time periods.
 
-Finally, a column (aka period) must be added to a MIS report instance, selecting your
-newly created budget as a data source. The data will be adjusted to the reporting period
-when displayed. Columns can be compared by adding a column of type "comparison" or "sum".
+**Budget by GL accounts**
+
+You can also create budgets by GL accounts. In this case, the budget is
+populated with one line per GL account (and optionally analytic account and/or
+tags) and time period.
+
+**Add budget columns to report instances**
+
+Finally, a column (aka period) must be added to a MIS report instance,
+selecting your newly created budget as a data source. The data will be adjusted
+to the reporting period when displayed. Columns can be compared by adding a
+column of type "comparison" or "sum".
 
 Known issues / Roadmap
 ======================
 
-The mis_builder `roadmap <https://github.com/OCA/mis-builder/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement>`_ 
-and `known issues <https://github.com/OCA/mis-builder/issues?q=is%3Aopen+is%3Aissue+label%3Abug>`_ can 
+The mis_builder `roadmap <https://github.com/OCA/mis-builder/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement>`_
+and `known issues <https://github.com/OCA/mis-builder/issues?q=is%3Aopen+is%3Aissue+label%3Abug>`_ can
 be found on GitHub.
 
 Changelog
 =========
+
+12.0.3.5.0 (2020-03-28)
+~~~~~~~~~~~~~~~~~~~~~~~
+
+**Features**
+
+- Budget by GL account: allow budgeting by GL account in addition to the
+  existing mechanism to budget by KPI. Budget items have a begin and end
+  date, and when reporting a pro-rata temporis adjustment is made to match
+  the reporting period. (`#259 <https://github.com/OCA/mis-builder/issues/259>`_)
+
+
+12.0.3.4.0 (2019-10-26)
+~~~~~~~~~~~~~~~~~~~~~~~
+
+**Bugfixes**
+
+- Consider analytic tags too when detecting overlapping budget items.
+  Previously only analytic account was considered, and this overlap detection
+  mechanism was overlooked when analytic tags were added to budget items. (`#241 <https://github.com/oca/mis-builder/issues/241>`_)
+
 
 11.0.3.3.0 (2019-01-13)
 ~~~~~~~~~~~~~~~~~~~~~~~

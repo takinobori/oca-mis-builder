@@ -90,12 +90,100 @@ analytic accounts.
 Known issues / Roadmap
 ======================
 
-The mis_builder `roadmap <https://github.com/OCA/mis-builder/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement>`_ 
-and `known issues <https://github.com/OCA/mis-builder/issues?q=is%3Aopen+is%3Aissue+label%3Abug>`_ can 
+The mis_builder `roadmap <https://github.com/OCA/mis-builder/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement>`_
+and `known issues <https://github.com/OCA/mis-builder/issues?q=is%3Aopen+is%3Aissue+label%3Abug>`_ can
 be found on GitHub.
 
 Changelog
 =========
+
+12.0.3.6.2 (2020-04-22)
+~~~~~~~~~~~~~~~~~~~~~~~
+
+**Bugfixes**
+
+- The "Settings" button is now displayed for users with the "Show full accounting features" right when previewing a report. (`#281 <https://github.com/OCA/mis-builder/issues/281>`_)
+
+
+12.0.3.6.1 (2020-04-22)
+~~~~~~~~~~~~~~~~~~~~~~~
+
+**Bugfixes**
+
+- Fix ``TypeError: 'module' object is not iterable`` when using
+  budgets by account. (`#276 <https://github.com/OCA/mis-builder/issues/276>`_)
+
+
+12.0.3.6.0 (2020-03-28)
+~~~~~~~~~~~~~~~~~~~~~~~
+
+**Features**
+
+- Add column-level filters on analytic account and analytic tags.
+  These filters are combined with a AND with the report-level filters
+  and cannot be modified in the preview. (`#138 <https://github.com/OCA/mis-builder/issues/138>`_)
+- Access to KPI from other reports in KPI expressions, aka subreports. In a
+  report template, one can list named "subreports" (other report templates). When
+  evaluating expressions, you can access KPI's of subreports with a dot-prefix
+  notation. Example: you can define a MIS Report for a "Balance Sheet", and then
+  have another MIS Report "Balance Sheet Ratios" that fetches KPI's from "Balance
+  Sheet" to create new KPI's for the ratios (e.g. balance_sheet.current_assets /
+  balance_sheet.total_assets). (`#155 <https://github.com/OCA/mis-builder/issues/155>`_)
+
+
+12.0.3.5.0 (2019-10-26)
+~~~~~~~~~~~~~~~~~~~~~~~
+
+**Features**
+
+- The ``account_id`` field of the model selected in 'Move lines source'
+  in the Period form can now be a Many2one
+  relationship with any model that has a ``code`` field (not only with
+  ``account.account`` model). To this end, the model to be used for Actuals
+  move lines can be configured on the report template. It can be something else
+  than move lines and the only constraint is that its ``account_id`` field
+  as a ``code`` field. (`#149 <https://github.com/oca/mis-builder/issues/149>`_)
+- Add ``source_aml_model_name`` field so extension modules providing
+  alternative data sources can more easily customize their data source. (`#214 <https://github.com/oca/mis-builder/issues/214>`_)
+- Support analytic tag filters in the backend view and preview widget.
+  Selecting several tags in the filter means filtering on move lines which
+  have *all* these tags set. This is to support the most common use case of
+  using tags for different dimensions. The filter also makes a AND with the
+  analytic account filter. (`#228 <https://github.com/oca/mis-builder/issues/228>`_)
+- Display company in account details rows in multi-company mode. (`#242 <https://github.com/oca/mis-builder/issues/242>`_)
+
+
+**Bugfixes**
+
+- Propagate context to xlsx report, so the analytic account filter
+  works when exporting to xslx too. This also requires a fix to
+  ``report_xlsx`` (see https://github.com/OCA/reporting-engine/pull/259). (`#178 <https://github.com/oca/mis-builder/issues/178>`_)
+- In columns of type Sum, preserve styles for KPIs that are not summable
+  (eg percentage values). Before this fix, such cells were displayed without
+  style. (`#219 <https://github.com/oca/mis-builder/issues/219>`_)
+- In Excel export, keep the percentage point suffix (pp) instead of replacing it with %. (`#220 <https://github.com/oca/mis-builder/issues/220>`_)
+
+
+12.0.3.4.0 (2019-07-09)
+~~~~~~~~~~~~~~~~~~~~~~~
+
+**Features**
+
+- New year-to-date mode for defining periods. (`#165 <https://github.com/oca/mis-builder/issues/165>`_)
+- Add support for move lines with negative debit or credit.
+  Used by some for storno accounting. Not officially supported. (`#175 <https://github.com/oca/mis-builder/issues/175>`_)
+- In Excel export, use a number format with thousands separator. The
+  specific separator used depends on the Excel configuration (eg regional
+  settings). (`#190 <https://github.com/oca/mis-builder/issues/190>`_)
+- Add generation date/time at the end of the XLS export. (`#191 <https://github.com/oca/mis-builder/issues/191>`_)
+- In presence of Sub KPIs, report more informative user errors when
+  non-multi expressions yield tuples of incorrect lenght. (`#196 <https://github.com/oca/mis-builder/issues/196>`_)
+
+
+**Bugfixes**
+
+- Fix rendering of percentage types in Excel export. (`#192 <https://github.com/oca/mis-builder/issues/192>`_)
+
 
 12.0.3.3.0 (2019-01-26)
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -190,12 +278,12 @@ New features:
   (`#2 <https://github.com/OCA/mis-builder/issues/2>`_)
 * [ADD] multi-company consolidation support, with currency conversion
   (the conversion rate date is the end of the reporting period)
-  (`#7 <https://github.com/OCA/mis-builder/issues/7>`_, 
+  (`#7 <https://github.com/OCA/mis-builder/issues/7>`_,
   `#3 <https://github.com/OCA/mis-builder/issues/3>`_)
-* [ADD] provide ref, datetime, dateutil, time, user in the evaluation 
-  context of move line domains; among other things, this allows using 
-  references to xml ids (such as account types or tax tags) when 
-  querying move lines 
+* [ADD] provide ref, datetime, dateutil, time, user in the evaluation
+  context of move line domains; among other things, this allows using
+  references to xml ids (such as account types or tax tags) when
+  querying move lines
   (`#26 <https://github.com/OCA/mis-builder/issues/26>`_).
 * [ADD] extended account selectors: you can now select accounts using
   any domain on account.account, not only account codes
@@ -208,7 +296,7 @@ New features:
 
 Bug fixes:
 
-* [FIX] fix error when saving periods in comparison mode on newly 
+* [FIX] fix error when saving periods in comparison mode on newly
   created (not yet saved) report instances.
   `#50 <https://github.com/OCA/mis-builder/pull/50>`_
 * [FIX] improve display of Base Date report instance view.
@@ -265,13 +353,13 @@ New features:
 
 Main bug fixes:
 
-* [FIX] deletion of templates and reports (cascade and retricts) 
+* [FIX] deletion of templates and reports (cascade and retricts)
   (https://github.com/OCA/account-financial-reporting/issues/281)
-* [FIX] copy of reports 
+* [FIX] copy of reports
   (https://github.com/OCA/account-financial-reporting/issues/282)
-* [FIX] better error message when periods have wrong/missing dates 
+* [FIX] better error message when periods have wrong/missing dates
   (https://github.com/OCA/account-financial-reporting/issues/283)
-* [FIX] xlsx export of string types KPI 
+* [FIX] xlsx export of string types KPI
   (https://github.com/OCA/account-financial-reporting/issues/285)
 * [FIX] sorting of detail by account
 * [FIX] computation bug in detail by account when multiple accounting
@@ -311,7 +399,7 @@ April 26-29, 2016. The rest (ie a major refactoring) has been done in
 the weeks after.
 
 * [IMP] hide button box in edit mode on the report instance settings form
-* [FIX] Fix sum aggregation of non-stored fields 
+* [FIX] Fix sum aggregation of non-stored fields
   (https://github.com/OCA/account-financial-reporting/issues/178)
 * [IMP] There is now a default style at the report level
 * [CHG] Number display properties (rounding, prefix, suffix, factor) are
@@ -420,6 +508,10 @@ Contributors
 * Richard deMeester <richard@willowit.com.au>
 * Eric Caudal <eric.caudal@elico-corp.com>
 * Andrea Stirpe <a.stirpe@onestein.nl>
+* Maxence Groine <mgroine@fiefmanage.ch>
+* Arnaud Pineux <arnaud.pineux@acsone.eu>
+* Ernesto Tejeda <ernesto.tejeda@tecnativa.com>
+* Pedro M. Baeza <pedro.baeza@tecnativa.com>
 
 Maintainers
 ~~~~~~~~~~~

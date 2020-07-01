@@ -1,7 +1,8 @@
-# Copyright 2014-2018 ACSONE SA/NV (<http://acsone.eu>)
+# Copyright 2014 ACSONE SA/NV (<http://acsone.eu>)
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
 from . import test_accounting_none
+from . import test_analytic_filters
 from . import test_aep
 from . import test_multi_company_aep
 from . import test_aggregate

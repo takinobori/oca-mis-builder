@@ -1,14 +1,13 @@
-# Copyright 2016-2018 ACSONE SA/NV (<http://acsone.eu>)
+# Copyright 2016 ACSONE SA/NV (<http://acsone.eu>)
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
 import traceback
 
-from odoo.tools.safe_eval import test_expr, _SAFE_OPCODES, _BUILTINS
+from odoo.tools.safe_eval import _BUILTINS, _SAFE_OPCODES, test_expr
 
 from .data_error import DataError, NameDataError
 
-
-__all__ = ['mis_safe_eval']
+__all__ = ["mis_safe_eval"]
 
 
 def mis_safe_eval(expr, locals_dict):
@@ -20,15 +19,15 @@ def mis_safe_eval(expr, locals_dict):
     present in local_dict.
     """
     try:
-        c = test_expr(expr, _SAFE_OPCODES, mode='eval')
-        globals_dict = {'__builtins__': _BUILTINS}
+        c = test_expr(expr, _SAFE_OPCODES, mode="eval")
+        globals_dict = {"__builtins__": _BUILTINS}
         # pylint: disable=eval-used,eval-referenced
         val = eval(c, globals_dict, locals_dict)
     except NameError:
-        val = NameDataError('#NAME', traceback.format_exc())
+        val = NameDataError("#NAME", traceback.format_exc())
     except ZeroDivisionError:
         # pylint: disable=redefined-variable-type
-        val = DataError('#DIV/0', traceback.format_exc())
+        val = DataError("#DIV/0", traceback.format_exc())
     except Exception:
-        val = DataError('#ERR', traceback.format_exc())
+        val = DataError("#ERR", traceback.format_exc())
     return val
